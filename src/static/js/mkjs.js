@@ -56,12 +56,14 @@
     };
 
     var toasty = function(options) {
-        var interval = options.interval || defaults.interval;
+        var interval = options.interval || defaults.interval,
+            params = $.extend({}, options);
 
-        toastyIn(options);
-        playSound(options);
-        setInterval(function(){
-            toastyOut(options);
+        toastyIn(params);
+        playSound(params);
+
+        setTimeout(function(){
+            toastyOut(params);
         }, interval);
     };
 
