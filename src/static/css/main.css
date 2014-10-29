@@ -23,6 +23,7 @@ html, body {
 .b-navigation a {
     font-size: 80px;
     color: #e20072;
+    text-decoration: none;
 }
 
 .b-toasty {

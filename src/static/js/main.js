@@ -7,13 +7,17 @@ $(document).ready(function () {
         document.getElementById("sound_player").innerHTML='<audio autoplay="autoplay"><source src="' + filename + '" type="audio/mpeg" /><source src="' + ogg + '" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + filename +'" /></audio>';
     }
 
-//    $('.b-toasty').slideDown("slow");
-
     $('.b-navigation').click(function(){
         playSound('./static/sounds/toasty.mp3');
         $('.b-toasty').animate({
             opacity: 1,
             bottom: 0
+        }, 300);
+    });
+
+    $('.b-toasty').click(function(){
+        $(this).animate({
+            bottom: '-100%'
         }, 300);
     });
 });
