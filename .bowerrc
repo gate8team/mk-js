@@ -1,0 +1,6 @@
+{
+    "directory": "src\\static\\js\\libs",
+    "proxy":"http://proxy3.t-systems.ru:3128",
+	"https-proxy":"http://proxy3.t-systems.ru:3128",
+	"protocol"  : "https"
+}

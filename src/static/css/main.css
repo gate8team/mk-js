@@ -1,0 +1,33 @@
+.-boxed *, .-boxed *:before, .-boxed *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+    color: #e20072;
+}
+
+.-relative {
+    position: relative;
+}
+
+.b-navigation {
+    margin: 150px;
+    text-align: center;
+}
+
+.b-navigation a {
+    font-size: 80px;
+    color: #e20072;
+}
+
+.b-toasty {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    line-height: 0;
+}
