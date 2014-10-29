@@ -1,28 +1,41 @@
 ; 'use strict';
-var MKjs = (function($){
-    var container, soundToPlay, startInterval, endInterval;
 
-    var mkjs = function(config) {
-        container = config.container || '.b-mkjs';
-        soundToPlay = config.soundToPlay;
-        startInterval = config.startInterval || 300;
-        endInterval = config.endInterval || 300;
+(function($) {
+    var defaults = {
+        audioClass: 'b-mkjs-player',
+        startInterval: 300,
+        endInterval: 300,
+        interval: 1000
     };
 
-    var playSound = function(soundPath) {
-        var sound = soundToPlay || soundPath;
-        var ogg = sound.replace('.mp3', '.ogg');
+    var appendPlayer = function(options) {
+        var sound = options.soundToPlay,
+            container = options.container,
+            ogg = sound.replace('.mp3', '.ogg');
 
         $(container)
-            .append('<div class="b-mkjs-player" style="display:none;"></div>');
+            .append('<div class="{audioClass}" style="display:none;"></div>'.replace('{audioClass}', defaults.audioClass));
         $(container)
-            .find('div.b-mkjs-player')
-            .html('<audio autoplay="autoplay"><source src="' + sound + '" type="audio/mpeg" /><source src="' + ogg + '" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + sound +'" /></audio>');
+            .find('div.{audioClass}'.replace('{audioClass}', defaults.audioClass))
+            .html('<audio><source src="' + sound + '" type="audio/mpeg" /><source src="' + ogg + '" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + sound +'" /></audio>');
 
         return this;
     };
 
-    var toastyIn = function() {
+    var playSound = function(options) {
+        var container = options.container;
+
+        var audio = $(container)
+            .find('div.{audioClass}'.replace('{audioClass}', defaults.audioClass))
+            .find('audio');
+
+        $(audio).get(0).play();
+    };
+
+    var toastyIn = function(options) {
+        var container = options.container,
+            startInterval = options.startInterval || defaults.startInterval;
+
         $(container).animate({
             opacity: 1,
             bottom: '-60px'
@@ -31,7 +44,10 @@ var MKjs = (function($){
         return this;
     };
 
-    var toastyOut = function() {
+    var toastyOut = function(options) {
+        var container = options.container,
+            endInterval = options.endInterval || defaults.endInterval;
+
         $(container).animate({
             bottom: '-100%'
         }, endInterval);
@@ -39,12 +55,73 @@ var MKjs = (function($){
         return this;
     };
 
-    mkjs.prototype = {
-        constructor: mkjs,
-        playSound: playSound,
-        toastyIn: toastyIn,
-        toastyOut: toastyOut
+    var toasty = function(options) {
+        var interval = options.interval || defaults.interval;
+
+        toastyIn(options);
+        playSound(options);
+        setInterval(function(){
+            toastyOut(options);
+        }, interval);
     };
 
-    return mkjs;
+    var methods = {
+        init: function(options) {
+            this.each(function(){
+                $.extend(options, {
+                    container: this
+                });
+                appendPlayer(options);
+            });
+
+            return this;
+        },
+        toastyIn: function(options) {
+            var params = options || {};
+
+            this.each(function(){
+                $.extend(params, {
+                    container: this
+                });
+                toastyIn(params);
+            });
+
+            return this;
+        },
+        toastyOut: function(options) {
+            var params = options || {};
+
+            this.each(function(){
+                $.extend(params, {
+                    container: this
+                });
+                toastyOut(params);
+            });
+
+            return this;
+        },
+        toasty: function(options) {
+            var params = options || {};
+
+            this.each(function(){
+                $.extend(params, {
+                    container: this
+                });
+
+                toasty(params);
+            });
+
+            return this;
+        }
+    };
+
+    $.fn.mkJS = function(method) {
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || ! method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('No such ' +  method + ' for jQuery.mkJS..');
+        }
+    };
 })(jQuery);
