@@ -76,6 +76,14 @@
                 appendPlayer(options);
             });
 
+            if (options.autoPlay) {
+                this.each(function(){
+                    toasty({
+                        container: this
+                    });
+                });
+            }
+
             return this;
         },
         toastyIn: function(options) {
