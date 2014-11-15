@@ -1,5 +1,8 @@
 ## jQuery Toasty Plugin
 
+### Link to show
+You can try this plugin here: http://gate8team.github.io/
+
 ### Installation
 
 1. Include jQuery script in your page.
